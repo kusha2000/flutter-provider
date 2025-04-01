@@ -8,7 +8,7 @@ class FavouritePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Cart Page",
+          "Favourite Page",
           style: TextStyle(
             color: Colors.deepPurpleAccent,
             fontWeight: FontWeight.bold,

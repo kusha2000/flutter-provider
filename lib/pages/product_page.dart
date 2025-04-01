@@ -3,6 +3,8 @@ import 'package:flutter_provider/data/product_data.dart';
 import 'package:flutter_provider/models/product_model.dart';
 import 'package:flutter_provider/pages/cart_page.dart';
 import 'package:flutter_provider/pages/favourite_page.dart';
+import 'package:flutter_provider/providers/cart_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatelessWidget {
   const ProductPage({super.key});
@@ -66,37 +68,45 @@ class ProductPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final Product product = products[index];
           return Card(
-            child: ListTile(
-              title: Row(
-                children: [
-                  Text(
-                    product.title,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+            child: Consumer(
+              builder: (BuildContext context, CartProvider cartProvider,
+                  Widget? child) {
+                return ListTile(
+                  title: Row(
+                    children: [
+                      Text(
+                        product.title,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 50,
+                      ),
+                      Text("0"),
+                    ],
                   ),
-                  SizedBox(
-                    width: 50,
+                  subtitle: Text("Rs.${product.price.toString()}"),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.favorite,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          cartProvider.addItem(
+                              product.id, product.price, product.title);
+                        },
+                        icon: Icon(
+                          Icons.shopping_cart,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text("0"),
-                ],
-              ),
-              subtitle: Text("Rs.${product.price.toString()}"),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.favorite,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.shopping_cart,
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
           );
         },
