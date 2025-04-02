@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_provider/pages/product_page.dart';
 import 'package:flutter_provider/providers/cart_provider.dart';
+import 'package:flutter_provider/providers/favourite_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => CartProvider(),
-      child: const MyApp(),
-    ),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => CartProvider()),
+      ChangeNotifierProvider(create: (context) => FavouriteProvider()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
