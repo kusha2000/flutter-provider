@@ -25,55 +25,77 @@ class CartPage extends StatelessWidget {
             return Column(
               children: [
                 Expanded(
-                    child: ListView.builder(
-                  itemCount: cartProvider.items.length,
-                  itemBuilder: (context, index) {
-                    final CartItem cartItem =
-                        cartProvider.items.values.toList()[index];
-                    return Container(
-                      color: const Color.fromARGB(231, 219, 125, 236),
-                      margin: EdgeInsets.all(10),
-                      child: ListTile(
-                        title: Text(cartItem.title),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(cartItem.id),
-                            Text("Rs.${cartItem.price} x ${cartItem.quantity}")
-                          ],
+                  child: ListView.builder(
+                    itemCount: cartProvider.items.length,
+                    itemBuilder: (context, index) {
+                      final CartItem cartItem =
+                          cartProvider.items.values.toList()[index];
+                      return Container(
+                        color: const Color.fromARGB(231, 219, 125, 236),
+                        margin: EdgeInsets.all(10),
+                        child: ListTile(
+                          title: Text(cartItem.title),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(cartItem.id),
+                              Text(
+                                  "Rs.${cartItem.price} x ${cartItem.quantity}")
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  cartProvider.removeSingleItem(cartItem.id);
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text("One Item Removed!"),
+                                    duration: Duration(seconds: 1),
+                                  ));
+                                },
+                                icon: Icon(Icons.remove),
+                              ),
+                              SizedBox(width: 10),
+                              IconButton(
+                                onPressed: () {
+                                  cartProvider.removeItem(cartItem.id);
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Text("Remove from Cart!"),
+                                    duration: Duration(seconds: 1),
+                                  ));
+                                },
+                                icon: Icon(Icons.remove_shopping_cart),
+                              )
+                            ],
+                          ),
                         ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                cartProvider.removeSingleItem(cartItem.id);
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("One Item Removed!"),
-                                  duration: Duration(seconds: 1),
-                                ));
-                              },
-                              icon: Icon(Icons.remove),
-                            ),
-                            SizedBox(width: 10),
-                            IconButton(
-                              onPressed: () {
-                                cartProvider.removeItem(cartItem.id);
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                  content: Text("Remove from Cart!"),
-                                  duration: Duration(seconds: 1),
-                                ));
-                              },
-                              icon: Icon(Icons.remove_shopping_cart),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ))
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Total : Rs.${cartProvider.totalAmount.toStringAsFixed(2)}",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      cartProvider.clearAll();
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Cart Cleared!"),
+                        duration: Duration(seconds: 1),
+                      ));
+                    },
+                    child: Text("Clear Cart!"),
+                  ),
+                ),
               ],
             );
           },
